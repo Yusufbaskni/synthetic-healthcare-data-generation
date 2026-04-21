@@ -106,5 +106,4 @@ When pipeline execution completes, outputs are saved to:
 This project is intended for educational and portfolio use.
 ## Connect
 
-- LinkedIn: [Ad Soyad](https://www.linkedin.com/in/kullaniciadi/)
-- GitHub: [@kullaniciadi](https://github.com/kullaniciadi)
+
