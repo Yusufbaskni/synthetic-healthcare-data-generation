@@ -1,16 +1,23 @@
 # Synthetic Healthcare Data Generation
 
-An end-to-end Python project to generate privacy-preserving synthetic healthcare data while preserving statistical patterns and useful clinical relationships from a real-like Electronic Health Record (EHR) dataset.
+End-to-end Python project for generating privacy-aware synthetic healthcare data from a realistic Electronic Health Record (EHR)-like dataset while preserving statistical structure and downstream ML usefulness.
 
-This repository is designed as a portfolio-grade data science project with modular architecture, type hints, and reproducible experimentation.
+## Why this project?
 
-## Project Goals
+Real healthcare data is sensitive and hard to share. This project demonstrates a reproducible workflow to:
 
-- Simulate realistic patient-level healthcare records with clinically meaningful correlations.
-- Train an SDV synthesizer (Gaussian Copula or CTGAN) on real-like data.
-- Generate synthetic records that preserve statistical fidelity.
-- Evaluate downstream machine learning utility using disease prediction.
-- Produce reports and visual assets for transparent model comparison.
+- Generate realistic mock patient records.
+- Train SDV-based synthesizers (`GaussianCopulaSynthesizer` or `CTGANSynthesizer`).
+- Evaluate statistical fidelity between real and synthetic data.
+- Compare ML utility via disease prediction performance.
+- Export reports and visual diagnostics for transparent analysis.
+
+## Key Features
+
+- Modular pipeline (`src/`) with clear separation of data generation, synthesis, evaluation, and utilities.
+- CLI-style pipeline execution via `main.py`.
+- Interactive Streamlit interface via `app.py`.
+- Automatic export of synthetic dataset, fidelity metrics, utility metrics, and correlation heatmaps.
 
 ## Tech Stack
 
@@ -19,30 +26,30 @@ This repository is designed as a portfolio-grade data science project with modul
 - SDV (Synthetic Data Vault)
 - Scikit-learn
 - Matplotlib / Seaborn
+- Streamlit
 
-## Repository Structure
+## Project Structure
 
 ```text
 .
-├── data/
-│   ├── raw/                # Real-like source data
-│   ├── synthetic/          # Generated synthetic datasets
-│   └── reports/            # Evaluation outputs and figures
+├── app.py                   # Streamlit UI
+├── main.py                  # End-to-end pipeline entry point
+├── requirements.txt
 ├── src/
 │   ├── __init__.py
-│   ├── data_loader.py      # Mock EHR generation and CSV loading
-│   ├── generator.py        # SDV model setup, training, and sampling
-│   ├── evaluator.py        # Fidelity and utility evaluation
-│   └── utils.py            # Plotting and helper utilities
-├── main.py                 # Full pipeline entry point
-├── app.py                  # Streamlit web application
-├── requirements.txt
-└── README.md
+│   ├── data_loader.py       # Mock EHR generation / loading
+│   ├── generator.py         # SDV model setup, fit, sample
+│   ├── evaluator.py         # Fidelity + ML utility metrics
+│   └── utils.py             # Plotting and helper utilities
+└── data/
+    ├── raw/
+    ├── synthetic/
+    └── reports/
 ```
 
-## Setup
+## Quickstart
 
-1. Create and activate a virtual environment:
+1) Create and activate virtual environment:
 
 ```bash
 python -m venv .venv
@@ -50,53 +57,36 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-2. Install dependencies:
+2) Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run
-
-Execute the full pipeline:
+3) Run the full pipeline:
 
 ```bash
 python main.py
 ```
 
-## Run as Web Application
-
-Launch the interactive Streamlit app:
+4) Or run the Streamlit app:
 
 ```bash
 streamlit run app.py
 ```
 
-Features in the app:
+## Streamlit App Capabilities
 
-- Model selection (`gaussian_copula` or `ctgan`)
-- Configurable rows, epochs, batch size, and random seed
-- Real vs synthetic preview tables
-- Fidelity report preview
-- Utility score comparison
-- Correlation heatmap visualization
-- One-click synthetic CSV download
+- Select synthesizer type (`gaussian_copula` or `ctgan`)
+- Configure epochs, batch size, sample size, and seed
+- Inspect real vs synthetic data previews
+- View fidelity and utility results
+- Display correlation comparison heatmaps
+- Download synthetic CSV directly
 
-## Pipeline Steps
+## Output Artifacts
 
-1. Generate a 1,000-row mock EHR dataset with realistic correlations.
-2. Detect metadata and train an SDV synthesizer.
-3. Sample synthetic healthcare records.
-4. Compute fidelity metrics (column-level statistical similarity).
-5. Evaluate utility by comparing Logistic Regression performance:
-   - model trained on real data
-   - model trained on synthetic data
-   - both tested on the same held-out real test set
-6. Save correlation heatmaps for side-by-side comparison.
-
-## Outputs
-
-After running `main.py`, outputs are written to:
+When pipeline execution completes, outputs are saved to:
 
 - `data/raw/ehr_real_mock.csv`
 - `data/synthetic/ehr_synthetic.csv`
@@ -104,14 +94,14 @@ After running `main.py`, outputs are written to:
 - `data/reports/utility_metrics.json`
 - `data/reports/figures/correlation_heatmaps.png`
 
-## Notes for Extension
+## Suggested Improvements
 
-- Switch `model_type` in `main.py` from `gaussian_copula` to `ctgan` for deep generative modeling.
-- Add privacy risk checks (for example nearest-neighbor distance or membership inference tests).
-- Add hyperparameter search for synthesizer and downstream models.
-- Integrate experiment tracking (MLflow / Weights & Biases) for versioned benchmarking.
+- Add privacy risk metrics (nearest-neighbor distance, membership inference proxies)
+- Add experiment tracking (MLflow / Weights & Biases)
+- Add configuration file support (YAML/TOML) for reproducible runs
+- Add tests and CI checks for pipeline reliability
 
 ## License
 
-This project is intended for educational and portfolio purposes.
+This project is intended for educational and portfolio use.
 
