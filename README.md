@@ -69,6 +69,12 @@ pip install -r requirements.txt
 python main.py
 ```
 
+You can also run custom experiments from CLI:
+
+```bash
+python main.py --model-type ctgan --epochs 500 --batch-size 128 --n-real 2000 --n-synthetic 2000 --seed 7
+```
+
 4) Or run the Streamlit app:
 
 ```bash
@@ -100,6 +106,17 @@ When pipeline execution completes, outputs are saved to:
 - Add experiment tracking (MLflow / Weights & Biases)
 - Add configuration file support (YAML/TOML) for reproducible runs
 - Add tests and CI checks for pipeline reliability
+
+## Approach and Lessons Learned
+
+This project started as a baseline Gaussian Copula pipeline and then evolved with comparative CTGAN runs.
+The main challenge was balancing visual fidelity with downstream model utility: synthetic data that "looks right"
+does not always preserve predictive behavior. I added explicit utility tracking (accuracy, F1, ROC-AUC) alongside
+distribution-level checks to avoid over-optimizing only for visual similarity.
+
+From experimentation, reproducibility controls (seed, row counts, and model configuration) were the most useful
+improvement for debugging and comparison. The CLI arguments in `main.py` reflect that lesson and make fast,
+traceable experiment loops easier.
 
 ## License
 

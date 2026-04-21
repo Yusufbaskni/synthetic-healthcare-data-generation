@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 from pathlib import Path
@@ -20,7 +21,37 @@ def configure_logging() -> None:
     )
 
 
-def run_pipeline() -> None:
+def parse_args() -> argparse.Namespace:
+    """Parse CLI arguments for reproducible pipeline runs."""
+    parser = argparse.ArgumentParser(
+        description="Synthetic healthcare data generation and evaluation pipeline."
+    )
+    parser.add_argument(
+        "--model-type",
+        choices=["gaussian_copula", "ctgan"],
+        default="gaussian_copula",
+        help="Synthesizer model to train.",
+    )
+    parser.add_argument("--epochs", type=int, default=300, help="Training epochs for CTGAN.")
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=256,
+        choices=[64, 128, 256, 512],
+        help="Batch size used during training.",
+    )
+    parser.add_argument("--n-real", type=int, default=1000, help="Number of mock real rows.")
+    parser.add_argument(
+        "--n-synthetic",
+        type=int,
+        default=1000,
+        help="Number of synthetic rows to generate.",
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility.")
+    return parser.parse_args()
+
+
+def run_pipeline(args: argparse.Namespace) -> None:
     """Run full workflow: data generation, model training, evaluation, and export."""
     configure_logging()
     logger = logging.getLogger(__name__)
@@ -36,14 +67,18 @@ def run_pipeline() -> None:
 
     logger.info("Step 1/5 - Generating mock EHR dataset")
     real_path = raw_dir / "ehr_real_mock.csv"
-    real_data = generate_mock_ehr_data(n_samples=1000, random_state=42, output_path=real_path)
+    real_data = generate_mock_ehr_data(
+        n_samples=args.n_real,
+        random_state=args.seed,
+        output_path=real_path,
+    )
     logger.info("Real-like dataset created at %s", real_path.as_posix())
 
     logger.info("Step 2/5 - Training SDV synthesizer")
     config = SynthesizerConfig(
-        model_type="gaussian_copula",
-        epochs=300,
-        batch_size=256,
+        model_type=args.model_type,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
         verbose=True,
     )
     generator = HealthcareDataGenerator(config=config)
@@ -51,7 +86,7 @@ def run_pipeline() -> None:
     logger.info("Model training complete: %s", generator.get_model_info())
 
     logger.info("Step 3/5 - Sampling synthetic dataset")
-    synthetic_data = generator.sample(n_rows=len(real_data))
+    synthetic_data = generator.sample(n_rows=args.n_synthetic)
     synthetic_path = synthetic_dir / "ehr_synthetic.csv"
     synthetic_data.to_csv(synthetic_path, index=False)
     logger.info("Synthetic dataset saved to %s", synthetic_path.as_posix())
@@ -67,7 +102,7 @@ def run_pipeline() -> None:
         real_data=real_data,
         synthetic_data=synthetic_data,
         target_column="chronic_disease",
-        random_state=42,
+        random_state=args.seed,
     )
     utility_path = reports_dir / "utility_metrics.json"
     utility_path.write_text(json.dumps(utility_results, indent=2), encoding="utf-8")
@@ -96,5 +131,5 @@ def run_pipeline() -> None:
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    run_pipeline(parse_args())
 
