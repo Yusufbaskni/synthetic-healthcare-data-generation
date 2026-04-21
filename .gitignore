@@ -14,6 +14,8 @@ FOLDER.ICO
 data/raw/
 data/synthetic/
 data/reports/
+python_web_sitesi/
+*.odc
 
 # Optional local env files
 .env
