@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# IDE/system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+FOLDER.ICO
+
+# Project outputs
+data/raw/
+data/synthetic/
+data/reports/
+
+# Optional local env files
+.env

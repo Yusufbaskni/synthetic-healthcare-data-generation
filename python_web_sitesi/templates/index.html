@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Merhaba</h1>
+  <p class="lead">Bu site Python ve <strong>Flask</strong> ile çalışıyor. Sayfaları <code>templates</code> klasöründen, stilleri <code>static</code> klasöründen düzenleyebilirsiniz.</p>
+  <p><a class="btn" href="{{ url_for('hakkimda') }}">Hakkımda →</a></p>
+</section>
+{% endblock %}
