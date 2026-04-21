@@ -126,4 +126,4 @@ This project is intended for educational and portfolio use.
 
 ## Connect
 
-- LinkedIn: [Ad Soyad](https://www.linkedin.com/in/yusuf-başkani/)
+- LinkedIn: [Yusuf Başkani](https://www.linkedin.com/in/yusuf-başkani/)
