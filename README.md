@@ -125,5 +125,5 @@ This project is intended for educational and portfolio use.
 ## Connect
 
 ## Connect
+www.linkedin.com/in/yusuf-başkani-0782553a1
 
-- LinkedIn: [Yusuf Başkani](https://www.linkedin.com/in/yusuf-başkani-0782553a1Özel URL adı)
