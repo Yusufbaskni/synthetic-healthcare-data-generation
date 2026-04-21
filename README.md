@@ -122,8 +122,5 @@ traceable experiment loops easier.
 
 This project is intended for educational and portfolio use.
 ## Connect
-## Connect
-
-## Connect
 www.linkedin.com/in/yusuf-başkani-0782553a1
 
